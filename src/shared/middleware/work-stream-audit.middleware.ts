@@ -7,14 +7,14 @@ import * as dayjs from 'dayjs';
 import * as utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 import { WorkStreamResponse } from '../classes/tracking-response-server';
-import { WorkStreamAuditService } from '../repository/stored-procedure/work-stream-audit.repository';
+import { WorkStreamAuditRepository } from '../repository/stored-procedure/work-stream-audit.repository';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
 @Injectable()
 export class WorkStreamAuditMiddleware implements NestMiddleware {
   constructor(
-    private readonly workStreamAuditService: WorkStreamAuditService,
+    private readonly workStreamAuditRepository: WorkStreamAuditRepository,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
@@ -22,7 +22,9 @@ export class WorkStreamAuditMiddleware implements NestMiddleware {
     const requestTracked = this.trackRequest(req);
 
     const workStreamAuditId =
-      await this.workStreamAuditService.insertWorkStreamAudit(requestTracked);
+      await this.workStreamAuditRepository.insertWorkStreamAudit(
+        requestTracked,
+      );
     console.log('--------------------workStreamAuditId', workStreamAuditId);
     this.trackResponse(workStreamAuditId[0].WorkStreamAuditId, res);
 
@@ -69,7 +71,7 @@ export class WorkStreamAuditMiddleware implements NestMiddleware {
         }),
         dayjs().locale('es').utc(true).format(),
       );
-      this.workStreamAuditService.updateWorkStreamAudit(
+      this.workStreamAuditRepository.updateWorkStreamAudit(
         workStreamAuditId,
         trackingResponse,
       );

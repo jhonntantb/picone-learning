@@ -6,7 +6,7 @@ import { WorkStreamResponse } from '../../classes/tracking-response-server';
 import { NameConnectionEnum } from '../../enums/connection-name';
 
 @Injectable()
-export class WorkStreamAuditService {
+export class WorkStreamAuditRepository {
   constructor(
     @InjectConnection(NameConnectionEnum.NAME_CONNECTION)
     private connection: Sequelize,
