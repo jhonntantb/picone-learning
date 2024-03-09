@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { PineconeService } from '../out/pinecone.service';
+import { PineconeService } from '../out/pinecone.repository';
 import { CreatePineconeDto } from './dto/create-pinecone.dto';
 import { UpdatePineconeDto } from './dto/update-pinecone.dto';
 

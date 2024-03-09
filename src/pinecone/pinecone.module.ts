@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { PineconeService } from './adapters/out/pinecone.service';
+import { PineconeDatabaseRepository } from './adapters/out/pinecone.repository';
 import { PineconeController } from './adapters/in/pinecone.controller';
 import { WorkStreamAuditMiddleware } from 'src/shared/middleware/work-stream-audit.middleware';
 import { WorkStreamAuditRepository } from 'src/shared/repository/stored-procedure/work-stream-audit.repository';
@@ -7,7 +7,7 @@ import { WorkStreamAuditRepository } from 'src/shared/repository/stored-procedur
 @Module({
   imports: [WorkStreamAuditRepository],
   controllers: [PineconeController],
-  providers: [PineconeService],
+  providers: [PineconeDatabaseRepository],
 })
 export class PineconeModule {
   configure(consumer: MiddlewareConsumer) {
