@@ -3,6 +3,7 @@ import { OpenAIEmbeddings } from '@langchain/openai';
 import { PineconeStore } from '@langchain/pinecone';
 import { Injectable } from '@nestjs/common';
 import { Pinecone } from '@pinecone-database/pinecone';
+import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 
 @Injectable()
 export class PineconeDatabaseRepository {
@@ -34,6 +35,14 @@ export class PineconeDatabaseRepository {
       maxConcurrency: 5,
       namespace: 'pulse',
     });
+  }
+
+  async upsertPDFFile(file: any) {
+    const loader = new PDFLoader(
+      'src/document_loaders/example_data/example.pdf',
+    );
+
+    const docs = await loader.load();
   }
   async searchVector(data: any) {
     const pineconeIndex = this.pc.Index(this.indexName);
